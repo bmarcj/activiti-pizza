@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://bpmn.io/bpmn" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="sid-38422fae-e03e-43a3-bef4-bd33b32041b2" name="" targetNamespace="http://bpmn.io/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="PizzaMaking" isClosed="false" isExecutable="false" processType="None">
+    <startEvent id="startEvent" name="Start"/>
+    <scriptTask activiti:exclusive="true" id="validatePizzaOrder" name="Validate pizza order"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="verifyTaskSizeGateway">
+      <extensionElements>
+        <activiti:executionListener event="start"/>
+        <activiti:executionListener event="start"/>
+        <activiti:executionListener event="start"/>
+      </extensionElements>
+    </exclusiveGateway>
+    <serviceTask activiti:exclusive="true" id="calculateOrderPrice" name="Calculate price"/>
+    <userTask activiti:exclusive="true" id="managerBakePizzas" name="Manager bakes pizzas"/>
+    <endEvent id="endEvent"/>
+    <sequenceFlow id="SequenceFlow_1k9iljv" name="validOrder == false" sourceRef="verifyTaskSizeGateway" targetRef="endEvent"/>
+    <sequenceFlow id="SequenceFlow_1r0e0wa" sourceRef="sendPizzaOrderEmail" targetRef="endEvent"/>
+    <sequenceFlow id="SequenceFlow_0wdd820" sourceRef="startEvent" targetRef="validatePizzaOrder"/>
+    <sequenceFlow id="SequenceFlow_0bcu4tq" sourceRef="validatePizzaOrder" targetRef="verifyTaskSizeGateway"/>
+    <sequenceFlow id="SequenceFlow_0e609ej" name="validOrder == true" sourceRef="verifyTaskSizeGateway" targetRef="calculateOrderPrice"/>
+    <serviceTask activiti:exclusive="true" id="sendPizzaOrderEmail" name="Send pizza order email"/>
+    <userTask activiti:exclusive="true" id="bakePizzas" name="Bake the pizzas"/>
+    <sequenceFlow id="SequenceFlow_1ylfb8m" sourceRef="managerBakePizzas" targetRef="sendPizzaOrderEmail"/>
+    <sequenceFlow id="SequenceFlow_12zlux7" sourceRef="calculateOrderPrice" targetRef="bakePizzas"/>
+    <sequenceFlow id="SequenceFlow_0yzo3up" sourceRef="bakePizzas" targetRef="sendPizzaOrderEmail">
+      <conditionExpression xsi:type="tFormalExpression"/>
+    </sequenceFlow>
+    <sequenceFlow id="SequenceFlow_0nf6jdq" sourceRef="bakePizzas" targetRef="managerBakePizzas"/>
+    <boundaryEvent attachedToRef="bakePizzas" cancelActivity="true" id="escalationTimer">
+      <timerEventDefinition id="_2_ED_1"/>
+    </boundaryEvent>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
+    <bpmndi:BPMNPlane bpmnElement="PizzaMaking">
+      <bpmndi:BPMNShape bpmnElement="startEvent" id="Shape-startEvent">
+        <omgdc:Bounds height="32.0" width="32.0" x="242.0" y="199.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="validatePizzaOrder" id="Shape-validatePizzaOrder">
+        <omgdc:Bounds height="80.0" width="100.0" x="360.0" y="174.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="80.0" width="100.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="verifyTaskSizeGateway" id="Shape-verifyTaskSizeGateway" isMarkerVisible="true">
+        <omgdc:Bounds height="32.0" width="32.0" x="546.0" y="189.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="calculateOrderPrice" id="Shape-calculateOrderPrice">
+        <omgdc:Bounds height="80.0" width="100.0" x="710.0" y="174.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="80.0" width="100.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="managerBakePizzas" id="Shape-managerBakePizzas">
+        <omgdc:Bounds height="80.0" width="100.0" x="866.0" y="465.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="80.0" width="100.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endEvent" id="Shape-endEvent">
+        <omgdc:Bounds height="32.0" width="32.0" x="553.0" y="487.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendPizzaOrderEmail" id="Shape-sendPizzaOrderEmail">
+        <omgdc:Bounds height="80.0" width="100.0" x="715.0" y="465.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="80.0" width="100.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="bakePizzas" id="Shape-bakePizzas">
+        <omgdc:Bounds height="90.0" width="100.0" x="710.0" y="317.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="90.0" width="100.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer" id="Shape-escalationTimer">
+        <omgdc:Bounds height="32.0" width="32.0" x="775.0" y="375.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="65.0" y="58.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1ylfb8m" id="BPMNEdge_SequenceFlow_1ylfb8m" sourceElement="managerBakePizzas" targetElement="sendPizzaOrderEmail">
+        <omgdi:waypoint x="866.0" y="505.0"/>
+        <omgdi:waypoint x="843.0" y="505.0"/>
+        <omgdi:waypoint x="843.0" y="505.0"/>
+        <omgdi:waypoint x="815.0" y="505.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="20.0" width="90.0" x="813.0" y="495.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1r0e0wa" id="BPMNEdge_SequenceFlow_1r0e0wa" sourceElement="sendPizzaOrderEmail" targetElement="endEvent">
+        <omgdi:waypoint x="715.0" y="505.0"/>
+        <omgdi:waypoint x="585.0" y="503.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="20.0" width="90.0" x="604.5" y="480.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0yzo3up" id="BPMNEdge_SequenceFlow_0yzo3up" sourceElement="bakePizzas" targetElement="sendPizzaOrderEmail">
+        <omgdi:waypoint x="762.5" y="407.0"/>
+        <omgdi:waypoint x="762.5" y="465.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="20.0" width="90.0" x="730.0" y="421.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_12zlux7" id="BPMNEdge_SequenceFlow_12zlux7" sourceElement="calculateOrderPrice" targetElement="bakePizzas">
+        <omgdi:waypoint x="760.0" y="254.0"/>
+        <omgdi:waypoint x="760.0" y="317.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="20.0" width="90.0" x="730.0" y="275.5"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0nf6jdq" id="BPMNEdge_SequenceFlow_0nf6jdq" sourceElement="bakePizzas" targetElement="managerBakePizzas">
+        <omgdi:waypoint x="810.0" y="357.0"/>
+        <omgdi:waypoint x="916.0" y="357.0"/>
+        <omgdi:waypoint x="916.0" y="465.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="20.0" width="90.0" x="818.0" y="332.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0bcu4tq" id="BPMNEdge_SequenceFlow_0bcu4tq" sourceElement="validatePizzaOrder" targetElement="verifyTaskSizeGateway">
+        <omgdi:waypoint x="460.0" y="214.0"/>
+        <omgdi:waypoint x="546.0" y="205.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="20.0" width="90.0" x="458.0" y="189.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1k9iljv" id="BPMNEdge_SequenceFlow_1k9iljv" sourceElement="verifyTaskSizeGateway" targetElement="endEvent">
+        <omgdi:waypoint x="565.5" y="217.5"/>
+        <omgdi:waypoint x="565.5" y="487.38750500400397"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="24.0" width="68.0" x="492.0" y="350.5055397685338"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0e609ej" id="BPMNEdge_SequenceFlow_0e609ej" sourceElement="verifyTaskSizeGateway" targetElement="calculateOrderPrice">
+        <omgdi:waypoint x="578.0" y="205.0"/>
+        <omgdi:waypoint x="710.0" y="214.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="12.0" width="89.0" x="608.771388998358" y="189.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0wdd820" id="BPMNEdge_SequenceFlow_0wdd820" sourceElement="startEvent" targetElement="validatePizzaOrder">
+        <omgdi:waypoint x="273.9687194226713" y="214.0"/>
+        <omgdi:waypoint x="316.0" y="214.0"/>
+        <omgdi:waypoint x="316.0" y="214.0"/>
+        <omgdi:waypoint x="360.0" y="214.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="20.0" width="90.0" x="286.0" y="204.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
