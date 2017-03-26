@@ -1,46 +1,46 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1490449541447" name="" targetNamespace="http://www.activiti.org/testm1490449541447" typeLanguage="http://www.w3.org/2001/XMLSchema">
-  <process id="simplePizza" isClosed="false" isExecutable="true" name="Simple Pizza Process" processType="None">
-    <startEvent id="startEvent" name="StartEvent"/>
-    <endEvent id="endEvent" name="EndEvent"/>
-    <serviceTask activiti:exclusive="true" activiti:expression="${orderValidationService.validatePizzaCount()}" id="validateOrder" name="Validate Order"/>
-    <sequenceFlow id="_5" sourceRef="startEvent" targetRef="validateOrder"/>
-    <sequenceFlow id="_6" sourceRef="validateOrder" targetRef="endEvent"/>
-  </process>
-  <bpmndi:BPMNDiagram documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
-    <bpmndi:BPMNPlane bpmnElement="simplePizza">
-      <bpmndi:BPMNShape bpmnElement="startEvent" id="Shape-startEvent">
-        <dc:Bounds height="32.0" width="32.0" x="80.0" y="175.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endEvent" id="Shape-endEvent">
-        <dc:Bounds height="32.0" width="32.0" x="380.0" y="175.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="validateOrder" id="Shape-validateOrder">
-        <dc:Bounds height="55.0" width="90.0" x="200.0" y="165.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="55.0" width="90.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="_5" id="BPMNEdge__5" sourceElement="_2" targetElement="_4">
-        <di:waypoint x="112.0" y="191.0"/>
-        <di:waypoint x="200.0" y="192.5"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_6" id="BPMNEdge__6" sourceElement="_4" targetElement="_3">
-        <di:waypoint x="290.0" y="192.5"/>
-        <di:waypoint x="380.0" y="191.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-    </bpmndi:BPMNPlane>
-  </bpmndi:BPMNDiagram>
-</definitions>
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:activiti="http://activiti.org/bpmn"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  targetNamespace="http://activiti.org/bpmn20"
+                  exporter="Camunda Modeler" exporterVersion="1.7.2">
+    <bpmn:process id="simplePizza" isExecutable="true">
+        <bpmn:startEvent id="Start">
+            <bpmn:outgoing>SequenceFlow_1kra6l2</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:serviceTask id="validateOrder" name="Validate Order"
+                          activiti:expression="#{orderValidationService.validatePizzaCount(amount, execution)}">
+            <bpmn:incoming>SequenceFlow_1kra6l2</bpmn:incoming>
+            <bpmn:outgoing>SequenceFlow_0x90wt8</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:exclusiveGateway id="exclusiveGateway">
+            <bpmn:incoming>SequenceFlow_0x90wt8</bpmn:incoming>
+            <bpmn:outgoing>enoughFlow</bpmn:outgoing>
+            <bpmn:outgoing>tooManyFlow</bpmn:outgoing>
+        </bpmn:exclusiveGateway>
+        <bpmn:endEvent id="endEvent">
+            <bpmn:incoming>tooManyFlow</bpmn:incoming>
+            <bpmn:incoming>SequenceFlow_1yxxq3e</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:manualTask id="cookPizza" name="Cook Pizza">
+            <bpmn:incoming>enoughFlow</bpmn:incoming>
+            <bpmn:outgoing>SequenceFlow_1rrmfcz</bpmn:outgoing>
+        </bpmn:manualTask>
+        <bpmn:userTask id="pizzaReady" name="Pizza Ready">
+            <bpmn:incoming>SequenceFlow_1rrmfcz</bpmn:incoming>
+            <bpmn:outgoing>SequenceFlow_1yxxq3e</bpmn:outgoing>
+        </bpmn:userTask>
+        <bpmn:sequenceFlow id="SequenceFlow_0x90wt8" sourceRef="validateOrder" targetRef="exclusiveGateway"/>
+        <bpmn:sequenceFlow id="enoughFlow" name="Enough pizzas" sourceRef="exclusiveGateway" targetRef="cookPizza">
+            <conditionExpression xsi:type="tFormalExpression">${pizzaOrderToOven == true}</conditionExpression>
+        </bpmn:sequenceFlow>
+        <bpmn:sequenceFlow id="tooManyFlow" name="Too many pizzas" sourceRef="exclusiveGateway" targetRef="endEvent">
+            <conditionExpression xsi:type="tFormalExpression">${pizzaOrderToOven == false}</conditionExpression>
+        </bpmn:sequenceFlow>
+        <bpmn:sequenceFlow id="SequenceFlow_1kra6l2" sourceRef="Start" targetRef="validateOrder"/>
+        <bpmn:sequenceFlow id="SequenceFlow_1rrmfcz" sourceRef="cookPizza" targetRef="pizzaReady"/>
+        <bpmn:sequenceFlow id="SequenceFlow_1yxxq3e" sourceRef="pizzaReady" targetRef="endEvent"/>
+    </bpmn:process>
+</bpmn:definitions>

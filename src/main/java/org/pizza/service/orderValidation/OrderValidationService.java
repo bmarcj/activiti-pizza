@@ -1,15 +1,25 @@
 package org.pizza.service.orderValidation;
 
+import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.runtime.Execution;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
 
 /**
  * Service for validating orders of pizzas.
  */
-@Component
+@Component("orderValidationService")
 public class OrderValidationService {
 
-    public void validatePizzaCount(){
-        System.out.println("Validating the pizza count in the order.");
+    Logger LOGGER = LoggerFactory.getLogger(OrderValidationService.class);
+
+    public void validatePizzaCount(int amount, DelegateExecution execution){
+
+        Boolean pizzaOrderToOven = amount < 10;
+        execution.setVariable("pizzaOrderToOven", pizzaOrderToOven);
+        LOGGER.info("Pizza numbers: {}", amount);
     }
 
 }
