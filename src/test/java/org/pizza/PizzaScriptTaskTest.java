@@ -19,7 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -45,12 +47,18 @@ public class PizzaScriptTaskTest {
     public void submitPizzaOrderNotValid() {
         Map<String, Object> variableMap = new HashMap<>();
         variableMap.put("amount", 9);
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("simplePizza", variableMap);
-        assertNotNull(processInstance.getId());
-        List<Task> tasks = taskService.createTaskQuery().executionId(processInstance.getId()).list();
-        for (Task task : tasks) {
-            LOGGER.info("Task {}", task);
-        }
+        ProcessInstance processInstance1 = runtimeService.startProcessInstanceByKey("simplePizza", variableMap);
+        assertNotNull(processInstance1.getId());
+        List<Task> tasks = taskService.createTaskQuery().executionId(processInstance1.getId()).list();
+        assertEquals("Should be 1 task", tasks.size(), 1);
+
+        variableMap.put("amount", 10);
+        ProcessInstance processInstance2 = runtimeService.startProcessInstanceByKey("simplePizza", variableMap);
+        tasks = taskService.createTaskQuery().executionId(processInstance2.getId()).list();
+        assertEquals("Should be no tasks", tasks.size(), 0);
+
+
+
     }
 }
 

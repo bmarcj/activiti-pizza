@@ -19,7 +19,8 @@ public class OrderValidationService {
 
         Boolean pizzaOrderToOven = amount < 10;
         execution.setVariable("pizzaOrderToOven", pizzaOrderToOven);
-        LOGGER.info("Pizza numbers: {}", amount);
+        String message = pizzaOrderToOven ? "Too many pizzas!" : "Not too many pizzas! Send them to the oven!";
+        LOGGER.info(message);
     }
 
 }
