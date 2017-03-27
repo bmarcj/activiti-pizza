@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +20,6 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -56,9 +54,6 @@ public class PizzaScriptTaskTest {
         ProcessInstance processInstance2 = runtimeService.startProcessInstanceByKey("simplePizza", variableMap);
         tasks = taskService.createTaskQuery().executionId(processInstance2.getId()).list();
         assertEquals("Should be no tasks", tasks.size(), 0);
-
-
-
     }
 }
 
